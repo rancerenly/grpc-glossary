@@ -1,0 +1,24 @@
+services:
+  glossary-server:
+    build: .
+    container_name: glossary-server
+    ports:
+      - "50051:50051"
+    command: python server.py
+    networks:
+      - glossary-network
+    restart: always
+
+  glossary-client:
+    build: .
+    container_name: glossary-client
+    depends_on:
+      - glossary-server
+    command: python client.py
+    networks:
+      - glossary-network
+    restart: on-failure
+
+networks:
+  glossary-network:
+    driver: bridge
